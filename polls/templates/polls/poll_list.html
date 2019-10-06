@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+        <h3>Polls</h3>
+        {% for p in object_list %}
+            <div style="border-style: dotted; padding: 10px">
+                <h4><a href="{% url 'detail_poll' p.id %}">{{ p.subject }}</a></h4>
+                {{ p.description }}<br>
+                <ul>
+                {% for v in p.vote_set.all %}
+                    <li>{{ v }} :: {{ v.votes_number }}</li>
+                {% endfor %}
+                </ul>
+                <i>{{ p.created_timestamp }} by {{ p.user }}</i>
+            </div>
+        {% endfor %}
+    </div>
+  </div>
+{% endblock %}

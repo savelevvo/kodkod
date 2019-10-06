@@ -14,3 +14,5 @@ class AuthUser(AbstractUser):
     verify_email = models.BooleanField(default=False)
     sex = models.SmallIntegerField(choices=USER_SEX, default=NA)
 
+    def __str__(self):
+        return self.email

@@ -4,7 +4,7 @@ from django.db import models
 
 class AuthUser(AbstractUser):
     NA = 3
-    USER_SEX = (
+    USER_GENDER = (
         (1, 'Male'),
         (2, 'Female'),
         (NA, 'Not specified')
@@ -12,7 +12,7 @@ class AuthUser(AbstractUser):
     birth_date = models.DateField(null=True, blank=True)
     country_iso = models.CharField(null=True, blank=True, max_length=8)
     verify_email = models.BooleanField(default=False)
-    sex = models.SmallIntegerField(choices=USER_SEX, default=NA)
+    gender = models.SmallIntegerField(choices=USER_GENDER, default=NA)
 
     def __str__(self):
         return self.email

@@ -1,7 +1,10 @@
-from django.conf.urls import url
 from .views import PollsList, PollDetail
+from django.urls import path
+from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
-    url(r'^$', PollsList.as_view(), name='all_polls'),
-    url(r'^(?P<id>[0-9]+)/$', PollDetail.as_view(), name='detail_poll'),
+    path('', PollsList.as_view()),
+    path('<int:pk>/', PollDetail.as_view())
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

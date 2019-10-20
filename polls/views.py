@@ -20,3 +20,10 @@ class PollDetail(APIView):
 
     def post(self):
         pass
+
+
+class UserPolls(APIView):
+    def get(self, request, pk, format=None):
+        polls = Poll.objects.filter(user=pk)
+        serializer = PollSerializer(polls, many=True)
+        return Response(serializer.data)

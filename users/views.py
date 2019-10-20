@@ -6,14 +6,17 @@ from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from .models import AuthUser
-from django.views.generic.detail import DetailView
+from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
+from .serializers import AuthUserSerializer
 
 
-class UserProfile(DetailView):
-    model = AuthUser
-
-    def get_object(self, queryset=None):
-        return self.request.user
+class UserProfile(APIView):
+    def get(self, request, pk, format=None):
+        user = get_object_or_404(AuthUser, pk=pk)
+        serializer = AuthUserSerializer(user)
+        return Response(serializer.data)
 
 
 def index(request):
@@ -44,9 +47,9 @@ def register(request):
     return render(request, 'register.html', {'user_form': user_form, 'registered': registered})
 
 
-def user_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
+class UserLogin(APIView):
+    def post(self, request):
+        username = request.POST.get('email')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
         if user:
@@ -55,5 +58,3 @@ def user_login(request):
         else:
             print("Someone tried to login and failed.")
             return HttpResponse("Invalid login details given")
-
-    return render(request, 'login.html', {})

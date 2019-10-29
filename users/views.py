@@ -7,19 +7,15 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 
-from .serializers import AuthUserSerializer
-from .models import AuthUser
+from users.serializers import AuthUserSerializer
+from polls.serializers import PollSerializer
+from users.models import AuthUser
+from polls.models import Poll
 
 
 class AuthUserView(ModelViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = AuthUserSerializer
-
-    @action(detail=True, permission_classes=[IsAuthenticated], authentication_classes=[TokenAuthentication])
-    def profile(self):
-        user = self.get_object()
-        serializer = AuthUserSerializer(user)
-        return Response(serializer.data)
 
     @action(methods=['post'], detail=False)
     def register(self, request):
@@ -50,8 +46,14 @@ class AuthUserView(ModelViewSet):
         token, _ = Token.objects.get_or_create(user=user)
         return Response({'token': token.key}, status=status.HTTP_200_OK)
 
-    @action(methods=['post'], detail=False, permission_classes=[IsAuthenticated], authentication_classes=[TokenAuthentication])
+    @action(methods=['post'], detail=False,
+            permission_classes=[IsAuthenticated],
+            authentication_classes=[TokenAuthentication])
     def logout(self, request):
         request.user.auth_token.delete()
         return Response(status=status.HTTP_200_OK)
 
+    @action(methods=['get'], detail=True)
+    def polls(self, request, pk):
+        serializer = PollSerializer(Poll.objects.filter(user=pk), many=True)
+        return Response(serializer.data)

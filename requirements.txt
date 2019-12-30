@@ -5,3 +5,5 @@ sqlparse==0.3.0
 djangorestframework==3.10.3
 djangorestframework-simplejwt==4.4.0
 requests==2.22.0
+coverage==4.5.4
+coveralls==1.9.2

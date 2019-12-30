@@ -5,5 +5,11 @@ install:
   - pip install -r requirements.txt
   - pip install -e .
 
+services:
+  - postgresql
+
+env:
+  - DJANGO=2.2.8 DB=postgres
+
 script:
   - python manage.py test

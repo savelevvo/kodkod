@@ -1,0 +1,20 @@
+dist: xenial
+language: python
+python: 3.7.4
+
+before_script:
+  - psql -c "CREATE DATABASE sd_db;" -U postgres
+  - psql -c "CREATE USER sd_db_user WITH CREATEDB PASSWORD 'sd_db_user';" -U postgres
+
+install:
+  - pip install -r requirements.txt
+  - pip install -e .
+
+services:
+  - postgresql
+
+env:
+  - DJANGO=2.2.8 DB=postgres
+
+script:
+  - python manage.py test

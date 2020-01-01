@@ -1,11 +1,12 @@
 import os
+from datetime import timedelta
 
+from .json_config import JsonConfig
+
+env = JsonConfig('solid_dollop/config.json')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-SECRET_KEY = '(fyi&&4feki*sl0o5qu0dhc)7q-jkvi2e311lr@9aiofm@up7_'
-
+SECRET_KEY = env['secret_key']
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -16,7 +17,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework.authtoken',
     'polls',
     'users'
 ]
@@ -36,7 +36,15 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20,
+}
+
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA': timedelta(hours=1),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
 }
 
 ROOT_URLCONF = 'solid_dollop.urls'
@@ -62,11 +70,11 @@ WSGI_APPLICATION = 'solid_dollop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sd_db',
-        'USER': 'sd_db_user',
-        'PASSWORD': 'sd_db_user',
-        'HOST': '127.0.0.1',
-        'PORT': 5432
+        'NAME': env['db_name'],
+        'USER': env['db_user'],
+        'PASSWORD': env['db_password'],
+        'HOST': env['db_host'],
+        'PORT': env['db_port'],
     }
 }
 

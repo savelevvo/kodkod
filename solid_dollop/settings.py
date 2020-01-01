@@ -1,11 +1,9 @@
 import os
 from datetime import timedelta
 
-from .json_config import JsonConfig
 
-env = JsonConfig('solid_dollop/config.json')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = env['secret_key']
+SECRET_KEY = os.environ['secret_key']
 DEBUG = True
 ALLOWED_HOSTS = []
 
@@ -70,11 +68,11 @@ WSGI_APPLICATION = 'solid_dollop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env['db_name'],
-        'USER': env['db_user'],
-        'PASSWORD': env['db_password'],
-        'HOST': env['db_host'],
-        'PORT': env['db_port'],
+        'NAME': os.environ['db_name'],
+        'USER': os.environ['db_user'],
+        'PASSWORD': os.environ['db_password'],
+        'HOST': os.environ['db_host'],
+        'PORT': os.environ['db_port'],
     }
 }
 

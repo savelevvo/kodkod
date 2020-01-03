@@ -45,7 +45,7 @@ JWT_AUTH = {
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7),
 }
 
-ROOT_URLCONF = 'solid_dollop.urls'
+ROOT_URLCONF = 'kodkod.urls'
 
 TEMPLATES = [
     {
@@ -63,7 +63,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'solid_dollop.wsgi.application'
+WSGI_APPLICATION = 'kodkod.wsgi.application'
 
 DATABASES = {
     'default': {

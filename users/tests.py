@@ -1,41 +1,40 @@
-from django.test import TestCase
-import requests
+import string
+
+from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase
+
+from factory import DjangoModelFactory
+from factory.fuzzy import FuzzyText
+
+from .models import AuthUser
+from django.utils.crypto import get_random_string
 
 
-class QuestionModelTests(TestCase):
+class UserFactory(DjangoModelFactory):
+    username = FuzzyText(chars=string.ascii_lowercase)
 
-    def test_authuser_register(self):
-        # Can't register with username that already exists
-        # existing_name = 'admin'
-        # r = requests.post('http://127.0.0.1:8000/users/register/',
-        #                   data={'username': existing_name, 'password': ''})
-        # self.assertEqual(r.status_code, 400)
+    class Meta:
+        model = AuthUser
+
+
+class AuthUserTests(APITestCase):
+
+    def test_register(self):
+        username = get_random_string(12, string.ascii_lowercase + string.digits)
+        password = get_random_string(12, string.ascii_lowercase + string.digits)
+        credentials = {
+            'username': username,
+            'password': password
+        }
+        response = self.client.post(reverse('authuser-register'), credentials)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_register_existing(self):
         pass
 
-    def test_authuser_login(self):
-        # Logged in user can't log in or register again
-        # r = requests.post('http://127.0.0.1:8000/users/login/',
-        #                   data={'username': 'admin', 'password': 'admin'})
-        #
-        # token = r.json()['token']
-        # headers = {'Authorization': f'Token {token}'}
-        # r = requests.post('http://127.0.0.1:8000/users/login/',
-        #                   data={'username': 'admin', 'password': 'admin'},
-        #                   headers=headers)
-        # self.assertEqual(r.status_code, 400)
-        #
-        # # Can't login with wrong or empty credentials
-        # credentials = ({'username': '', 'password': ''},
-        #                {'username': 'admin', 'password': ''},
-        #                {'username': '', 'password': '123Qwerty'},
-        #                {'username': ',zxcmvndjf', 'password': '13q16'})
-        # for c in credentials:
-        #     r = requests.post('http://127.0.0.1:8000/users/login/', data=c)
-        #     self.assertEqual(r.status_code, 400)
+    def test_token(self):
         pass
 
-    def test_authuser_logout(self):
-        pass
-
-    def test_authuser_profile(self):
+    def test_token_refresh(self):
         pass

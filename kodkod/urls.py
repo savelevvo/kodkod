@@ -6,7 +6,7 @@ from users.views import AuthUserView
 from polls.views import PollView
 
 router = routers.SimpleRouter()
-router.register(r'users', AuthUserView)
+router.register(r'users', AuthUserView, base_name='authuser')
 router.register(r'polls', PollView)
 
 urlpatterns = [

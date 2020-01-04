@@ -8,33 +8,30 @@ from factory import DjangoModelFactory
 from factory.fuzzy import FuzzyText
 
 from .models import AuthUser
-from django.utils.crypto import get_random_string
 
 
 class UserFactory(DjangoModelFactory):
     username = FuzzyText(chars=string.ascii_lowercase)
+    password = FuzzyText(length=10)
 
     class Meta:
         model = AuthUser
 
 
 class AuthUserTests(APITestCase):
-
     def test_register(self):
-        username = get_random_string(12, string.ascii_lowercase + string.digits)
-        password = get_random_string(12, string.ascii_lowercase + string.digits)
         credentials = {
-            'username': username,
-            'password': password
+            'username': FuzzyText(chars=string.ascii_lowercase),
+            'password': FuzzyText(length=12)
         }
         response = self.client.post(reverse('authuser-register'), credentials)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_register_existing(self):
-        pass
-
-    def test_token(self):
-        pass
-
-    def test_token_refresh(self):
-        pass
+        user = UserFactory()
+        credentials = {
+            'username': user.username,
+            'password': user.password
+        }
+        response = self.client.post(reverse('authuser-register'), credentials)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

@@ -5,7 +5,10 @@
     <b-container class="bv-example-row">
       <b-row>
         <b-col sm="6" offset="3">
-          <Poll />
+          <Poll v-if="questions.length"
+            :currentQuestion="questions[index]"
+            :next="next"
+          />
         </b-col>
       </b-row>
     </b-container>
@@ -23,21 +26,25 @@ export default {
     Header,
     Poll
   },
+  data() {
+    return {
+      questions: [],
+      index: 0
+    }
+  },
+  methods: {
+    next() {
+      this.index++
+    }
+  },
   mounted: function() {
-    fetch('http://localhost:8000/auth/token/',
+    fetch('https://opentdb.com/api.php?amount=10&type=multiple',
             {
-              method: 'post',
-              mode: 'no-cors',
-              cache: 'no-cache',
-              accept: '*/*',
-              referrer: 'no-referrer',
-              headers: {
-                  'Access-Control-Allow-Origin': '*',
-              },
-              body: JSON.stringify({'username': 'admin', 'password': 'admin'})
+              method: 'get'
             }
     )
-    .then((response) => {console.log(response.json())})
+    .then((response) => { return response.json() })
+    .then((jsonData) => { this.questions = jsonData.results })
 }
 
 

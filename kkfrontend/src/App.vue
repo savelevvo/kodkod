@@ -1,8 +1,8 @@
 <template>
-  <div id="app">
+  <div id="kodkod">
     <Header
-            :numCorrect="numCorrect"
-            :numTotal="numTotal"
+      :numCorrect="numCorrect"
+      :numTotal="numTotal"
     />
 
     <b-container class="bv-example-row">
@@ -25,7 +25,7 @@ import Header from './components/Header.vue'
 import Poll from './components/Poll.vue'
 
 export default {
-  name: 'app',
+  name: 'kodkod',
   components: {
     Header,
     Poll

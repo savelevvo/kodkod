@@ -1,20 +1,17 @@
 <template>
   <div>
-    <b-jumbotron header="BootstrapVue" lead="Bootstrap v4 Components for Vue.js 2">
-      <p>
-        {{ currentQuestion.question }}
-      </p>
+    <b-jumbotron :lead="currentQuestion.question">
 
-        <b-list-group>
-          <b-list-group-item
-            v-for="(answer, index) in answers"
-            :key="index"
-            @click="selectAnswer(index)"
-            :class="answerClass(index)"
-          >
-            {{ answer }}
-          </b-list-group-item>
-        </b-list-group>
+      <b-list-group>
+        <b-list-group-item
+          v-for="(answer, index) in answers"
+          :key="index"
+          @click="selectAnswer(index)"
+          :class="answerClass(index)"
+        >
+          {{ answer }}
+        </b-list-group-item>
+      </b-list-group>
 
       <b-button
         variant="primary"

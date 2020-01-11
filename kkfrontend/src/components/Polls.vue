@@ -1,8 +1,15 @@
 <template>
   <div>
-    <b-jumbotron :lead="currentQuestion.question">
-
-      <b-list-group>
+    <b-card-group deck>
+      <b-card
+        header="username"
+        header-tag="header"
+        footer="4 Comments 21 votes 9 watchers"
+        footer-tag="footer"
+        :title="currentQuestion.question"
+      >
+        <b-card-text>Description text</b-card-text>
+        <b-list-group>
         <b-list-group-item
           v-for="(answer, index) in answers"
           :key="index"
@@ -21,7 +28,10 @@
         Submit
       </b-button>
       <b-button @click="next" variant="success" href="#">Next</b-button>
-    </b-jumbotron>
+      </b-card>
+
+    </b-card-group>
+
   </div>
 </template>
 

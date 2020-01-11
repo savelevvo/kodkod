@@ -6,9 +6,21 @@
     />
 
     <b-container class="bv-example-row">
+      <h1 class="header-main">Popular</h1>
       <b-row>
-        <b-col sm="6" offset="3">
-          <Poll v-if="questions.length"
+        <b-col v-for="i in [1,2,3]" :key="i">
+          <Polls v-if="questions.length"
+            :currentQuestion="questions[index]"
+            :next="next"
+            :increment="increment"
+          />
+        </b-col>
+      </b-row>
+
+      <h1 class="header-main">Recent</h1>
+      <b-row>
+        <b-col v-for="i in [1,2,3]" :key="i">
+          <Polls v-if="questions.length"
             :currentQuestion="questions[index]"
             :next="next"
             :increment="increment"
@@ -22,20 +34,20 @@
 
 <script>
 import Header from './components/Header.vue'
-import Poll from './components/Poll.vue'
+import Polls from './components/Polls.vue'
 
 export default {
   name: 'kodkod',
   components: {
     Header,
-    Poll
+    Polls
   },
   data() {
     return {
       questions: [],
       index: 0,
-        numCorrect: 0,
-        numTotal: 0
+      numCorrect: 0,
+      numTotal: 0
     }
   },
   methods: {
@@ -57,9 +69,12 @@ export default {
     )
     .then((response) => { return response.json() })
     .then((jsonData) => { this.questions = jsonData.results })
-}
-
-
-
+  }
 }
 </script>
+
+<style scoped>
+  .header-main {
+    margin-top: 50px;
+  }
+</style>

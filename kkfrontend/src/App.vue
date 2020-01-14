@@ -42,7 +42,7 @@ export default {
     Header,
     Polls
   },
-  data() {
+  data () {
     return {
       questions: [],
       index: 0,
@@ -51,24 +51,24 @@ export default {
     }
   },
   methods: {
-    next() {
+    next () {
       this.index++
     },
-    increment(isCorrect) {
+    increment (isCorrect) {
       if (isCorrect) {
-          this.numCorrect++
+        this.numCorrect++
       }
       this.numTotal++
     }
   },
-  mounted: function() {
+  mounted: function () {
     fetch('https://opentdb.com/api.php?amount=10&type=multiple',
-            {
-              method: 'get'
-            }
+      {
+        method: 'get'
+      }
     )
-    .then((response) => { return response.json() })
-    .then((jsonData) => { this.questions = jsonData.results })
+      .then((response) => { return response.json() })
+      .then((jsonData) => { this.questions = jsonData.results })
   }
 }
 </script>

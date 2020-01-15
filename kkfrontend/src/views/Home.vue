@@ -1,125 +1,80 @@
 <template>
-  <div>
-    <b-card-group deck>
-      <b-card
-        header="username"
-        header-tag="header"
-        footer="4 Comments 21 votes 9 watchers"
-        footer-tag="footer"
-        :title="currentQuestion.question"
-      >
-        <b-card-text>Description text</b-card-text>
-        <b-list-group>
-        <b-list-group-item
-          v-for="(answer, index) in answers"
-          :key="index"
-          @click="selectAnswer(index)"
-          :class="answerClass(index)"
-        >
-          {{ answer }}
-        </b-list-group-item>
-      </b-list-group>
+  <div id="kodkod">
+    <Header
+      :numCorrect="numCorrect"
+      :numTotal="numTotal"
+    />
 
-      <b-button
-        variant="primary"
-        @click="submitAnswer"
-        :disabled="selectedIndex === null || answered"
-      >
-        Submit
-      </b-button>
-      <b-button @click="next" variant="success" href="#">Next</b-button>
-      </b-card>
+    <b-container class="bv-example-row">
+      <h1 class="header-main">Popular</h1>
+      <b-row>
+        <b-col v-for="i in [1,2,3]" :key="i">
+          <Polls v-if="questions.length"
+            :currentQuestion="questions[index]"
+            :next="next"
+            :increment="increment"
+          />
+        </b-col>
+      </b-row>
 
-    </b-card-group>
+      <h1 class="header-main">Recent</h1>
+      <b-row>
+        <b-col v-for="i in [1,2,3]" :key="i">
+          <Polls v-if="questions.length"
+            :currentQuestion="questions[index]"
+            :next="next"
+            :increment="increment"
+          />
+        </b-col>
+      </b-row>
+    </b-container>
 
   </div>
 </template>
 
 <script>
-import _ from 'lodash'
+import Header from './Header.vue'
+import Polls from './Poll.vue'
 
 export default {
-  props: {
-    currentQuestion: Object,
-    next: Function,
-    increment: Function
+  name: 'kodkod',
+  components: {
+    Header,
+    Polls
   },
   data () {
     return {
-      selectedIndex: null,
-      correctIndex: null,
-      shuffledAnswers: [],
-      answered: false
-    }
-  },
-  computed: {
-    answers () {
-      let answers = [...this.currentQuestion.incorrect_answers]
-      answers.push(this.currentQuestion.correct_answer)
-      return answers
-    }
-  },
-  watch: {
-    currentQuestion: {
-      immediate: true,
-      handler () {
-        this.selectedIndex = null
-        this.answered = false
-        this.shuffleAnswers()
-      }
+      questions: [],
+      index: 0,
+      numCorrect: 0,
+      numTotal: 0
     }
   },
   methods: {
-    selectAnswer (index) {
-      this.selectedIndex = index
+    next () {
+      this.index++
     },
-    submitAnswer () {
-      let isCorrect = false
-      if (this.selectedIndex === this.correctIndex) {
-        isCorrect = true
+    increment (isCorrect) {
+      if (isCorrect) {
+        this.numCorrect++
       }
-      this.answered = true
-      this.increment(isCorrect)
-    },
-    shuffleAnswers () {
-      let answers = [...this.currentQuestion.incorrect_answers, this.currentQuestion.correct_answer]
-      this.shuffledAnswers = _.shuffle(answers)
-      this.correctIndex = this.shuffledAnswers.indexOf(this.currentQuestion.correct_answer)
-    },
-    answerClass (index) {
-      let answerClass = ''
-      if (!this.answered && this.selectedIndex === index) {
-        answerClass = 'selected'
-      } else if (this.answered && this.correctIndex === index) {
-        answerClass = 'correct'
-      } else if (this.answered && this.selectedIndex === index && this.correctIndex !== index) {
-        answerClass = 'incorrect'
-      }
-      return answerClass
+      this.numTotal++
     }
+  },
+  mounted: function () {
+    fetch('https://opentdb.com/api.php?amount=10&type=multiple',
+      {
+        method: 'get'
+      }
+    )
+      .then((response) => { return response.json() })
+      .then((jsonData) => { this.questions = jsonData.results })
   }
 }
 </script>
 
 <style scoped>
-  .list-group {
-    margin-bottom: 15px;
+  .header-main {
+    margin-top: 50px;
   }
-  .list-group-item:hover {
-    background: #eee;
-    cursor: pointer;
-  }
-  .btn {
-    margin: 0 5px;
-  }
-  .selected {
-    background-color: lightblue;
-  }
-  .correct {
-    background-color: lightgreen;
-  }
-  .incorrect {
-    background-color: red;
-  }
-
 </style>

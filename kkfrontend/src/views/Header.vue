@@ -1,15 +1,15 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="dark">
-      <b-navbar-brand>KodKod</b-navbar-brand>
+      <b-navbar-brand><router-link to="/">KodKod</router-link></b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
 
         <b-navbar-nav>
-          <b-nav-item href="#">Categories</b-nav-item>
-          <b-nav-item href="#">Companies</b-nav-item>
+          <b-nav-item><router-link to="/categories">Categories</router-link></b-nav-item>
+          <b-nav-item><router-link to="/companies">Companies</router-link></b-nav-item>
           <b-nav-item disabled>Counter: {{ numCorrect }}/{{ numTotal }}</b-nav-item>
         </b-navbar-nav>
 
@@ -24,8 +24,8 @@
             </b-input-group>
           </b-nav-form>
 
-          <b-nav-item href="#">Login</b-nav-item>
-          <b-nav-item href="#">Sign Up</b-nav-item>
+          <b-nav-item><router-link to="/login">Login</router-link></b-nav-item>
+          <b-nav-item><router-link to="/signup">Sign Up</router-link></b-nav-item>
 
         </b-navbar-nav>
       </b-collapse>

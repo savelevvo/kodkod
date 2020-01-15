@@ -33,14 +33,14 @@
 </template>
 
 <script>
-import Header from './components/Header.vue'
-import Polls from './components/Polls.vue'
+// import Header from './components/Header.vue'
+// import Polls from './components/Polls.vue'
 
 export default {
   name: 'kodkod',
   components: {
-    Header,
-    Polls
+    // Header,
+    // Polls
   },
   data () {
     return {

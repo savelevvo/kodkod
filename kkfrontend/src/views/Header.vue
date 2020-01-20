@@ -13,9 +13,7 @@
           <b-nav-item
             ><router-link to="/companies">Companies</router-link></b-nav-item
           >
-          <b-nav-item disabled
-            >Counter: {{ numCorrect }}/{{ numTotal }}</b-nav-item
-          >
+          <b-nav-item disabled>Polls: {{ totalCount }}</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
@@ -40,6 +38,6 @@
 
 <script>
 export default {
-  props: ['numCorrect', 'numTotal']
+  props: ['totalCount']
 }
 </script>

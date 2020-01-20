@@ -38,9 +38,8 @@ import _ from 'lodash'
 
 export default {
   props: {
-    currentQuestion: Object,
-    next: Function,
-    increment: Function
+    subject: String,
+    author: String
   },
   data() {
     return {

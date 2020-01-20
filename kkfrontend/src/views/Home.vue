@@ -1,31 +1,26 @@
 <template>
   <div id="kodkod">
-    <Header :numCorrect="numCorrect" :numTotal="numTotal" />
+    <Header :totalCount="pCount" />
 
     <b-container class="bv-example-row">
       <h1 class="header-main">Popular</h1>
       <b-row>
-        <b-col v-for="i in [1, 2, 3]" :key="i">
-          <Polls
-            v-if="questions.length"
-            :currentQuestion="questions[index]"
-            :next="next"
-            :increment="increment"
-          />
+        <b-col v-for="poll in pPolls" :key="poll.id">
+          <Polls v-if="pCount" :subject="poll.subject" :author="poll.user" />
         </b-col>
       </b-row>
 
-      <h1 class="header-main">Recent</h1>
-      <b-row>
-        <b-col v-for="i in [1, 2, 3]" :key="i">
-          <Polls
-            v-if="questions.length"
-            :currentQuestion="questions[index]"
-            :next="next"
-            :increment="increment"
-          />
-        </b-col>
-      </b-row>
+      <!--      <h1 class="header-main">Recent</h1>-->
+      <!--      <b-row>-->
+      <!--        <b-col v-for="i in [1, 2, 3]" :key="i">-->
+      <!--          <Polls-->
+      <!--            v-if="questions.length"-->
+      <!--            :currentQuestion="questions[index]"-->
+      <!--            :next="next"-->
+      <!--            :increment="increment"-->
+      <!--          />-->
+      <!--        </b-col>-->
+      <!--      </b-row>-->
     </b-container>
   </div>
 </template>
@@ -45,7 +40,9 @@ export default {
       questions: [],
       index: 0,
       numCorrect: 0,
-      numTotal: 0
+      numTotal: 0,
+      pCount: 0,
+      pPolls: []
     }
   },
   methods: {
@@ -57,18 +54,23 @@ export default {
         this.numCorrect++
       }
       this.numTotal++
+    },
+    async getData(vm) {
+      const axios = require('axios').default
+      await axios
+        .get('http://localhost:8000/polls/')
+        .then(function(response) {
+          console.log(response)
+          vm.pPolls = response.data.results
+          vm.pCount = response.data.count
+        })
+        .catch(function(error) {
+          console.log('ERROR!' + error)
+        })
     }
   },
   mounted: function() {
-    fetch('https://opentdb.com/api.php?amount=10&type=multiple', {
-      method: 'get'
-    })
-      .then(response => {
-        return response.json()
-      })
-      .then(jsonData => {
-        this.questions = jsonData.results
-      })
+    this.getData(this)
   }
 }
 </script>

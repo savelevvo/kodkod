@@ -2,129 +2,35 @@
   <div>
     <b-card-group deck>
       <b-card
-        header="username"
+        :header="poll.user.toString()"
         header-tag="header"
         footer="4 Comments 21 votes 9 watchers"
         footer-tag="footer"
-        :title="currentQuestion.question"
+        :title="poll.subject"
       >
         <b-card-text>Description text</b-card-text>
         <b-list-group>
-          <b-list-group-item
-            v-for="(answer, index) in answers"
-            :key="index"
-            @click="selectAnswer(index)"
-            :class="answerClass(index)"
-          >
-            {{ answer }}
+          <b-list-group-item v-for="(vote, index) in poll.votes" :key="index">
+            {{ vote.text }} [{{ vote.votes_number }}]
           </b-list-group-item>
         </b-list-group>
 
-        <b-button
-          variant="primary"
-          @click="submitAnswer"
-          :disabled="selectedIndex === null || answered"
-        >
+        <b-button variant="primary">
           Submit
         </b-button>
-        <b-button @click="next" variant="success" href="#">Next</b-button>
       </b-card>
     </b-card-group>
   </div>
 </template>
 
 <script>
-import _ from 'lodash'
-
 export default {
-  props: {
-    subject: String,
-    author: String
-  },
+  props: { poll: Object },
   data() {
-    return {
-      selectedIndex: null,
-      correctIndex: null,
-      shuffledAnswers: [],
-      answered: false
-    }
+    return {}
   },
-  computed: {
-    answers() {
-      let answers = [...this.currentQuestion.incorrect_answers]
-      answers.push(this.currentQuestion.correct_answer)
-      return answers
-    }
-  },
-  watch: {
-    currentQuestion: {
-      immediate: true,
-      handler() {
-        this.selectedIndex = null
-        this.answered = false
-        this.shuffleAnswers()
-      }
-    }
-  },
-  methods: {
-    selectAnswer(index) {
-      this.selectedIndex = index
-    },
-    submitAnswer() {
-      let isCorrect = false
-      if (this.selectedIndex === this.correctIndex) {
-        isCorrect = true
-      }
-      this.answered = true
-      this.increment(isCorrect)
-    },
-    shuffleAnswers() {
-      let answers = [
-        ...this.currentQuestion.incorrect_answers,
-        this.currentQuestion.correct_answer
-      ]
-      this.shuffledAnswers = _.shuffle(answers)
-      this.correctIndex = this.shuffledAnswers.indexOf(
-        this.currentQuestion.correct_answer
-      )
-    },
-    answerClass(index) {
-      let answerClass = ''
-      if (!this.answered && this.selectedIndex === index) {
-        answerClass = 'selected'
-      } else if (this.answered && this.correctIndex === index) {
-        answerClass = 'correct'
-      } else if (
-        this.answered &&
-        this.selectedIndex === index &&
-        this.correctIndex !== index
-      ) {
-        answerClass = 'incorrect'
-      }
-      return answerClass
-    }
-  }
+  computed: {},
+  watch: {},
+  methods: {}
 }
 </script>
-
-<style scoped>
-.list-group {
-  margin-bottom: 15px;
-}
-.list-group-item:hover {
-  background: #eee;
-  cursor: pointer;
-}
-.btn {
-  margin: 0 5px;
-}
-.selected {
-  background-color: lightblue;
-}
-.correct {
-  background-color: lightgreen;
-}
-.incorrect {
-  background-color: red;
-}
-</style>

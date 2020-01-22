@@ -3,9 +3,9 @@
     <Header :totalCount="pCount" />
 
     <b-container class="bv-example-row">
-      <h1 class="header-main">Popular</h1>
+      <h1 class="header-main">Recent</h1>
       <b-row>
-        <b-col v-for="poll in pPolls" :key="poll.id">
+        <b-col v-for="poll in pPolls.slice(-3)" :key="poll.id">
           <Poll v-if="pCount" :poll="poll" />
         </b-col>
       </b-row>

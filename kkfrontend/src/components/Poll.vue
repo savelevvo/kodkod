@@ -1,23 +1,39 @@
 <template>
   <div>
     <b-card-group deck>
-      <b-card
-        :header="poll.user.email"
-        header-tag="header"
-        :footer="footerText"
-        footer-tag="footer"
-        :title="poll.subject"
-      >
-        <b-card-text>Description text</b-card-text>
-        <b-list-group>
-          <b-list-group-item v-for="(vote, index) in poll.votes" :key="index">
+      <b-card :title="poll.subject">
+        <template v-slot:header>
+          <router-link
+            :to="{ name: 'user-detail', params: { id: poll.user.id } }"
+          >
+            {{ poll.user.email }}</router-link
+          >
+        </template>
+
+        <b-card-text>{{ poll.description }}</b-card-text>
+
+        <b-form-group>
+          <b-form-radio
+            v-model="selected"
+            name="some-radios"
+            v-for="(vote, index) in poll.votes"
+            :key="index"
+            :value="vote.id"
+          >
             {{ vote.text }} [{{ vote.votes_number }}]
-          </b-list-group-item>
-        </b-list-group>
+          </b-form-radio>
+        </b-form-group>
 
         <b-button variant="primary">
           Submit
         </b-button>
+
+        <template v-slot:footer>
+          {{ 'Votes: ' + poll.votes_count.toString() }}
+          <router-link :to="{ name: 'poll-detail', params: { id: poll.id } }">
+            details
+          </router-link>
+        </template>
       </b-card>
     </b-card-group>
   </div>
@@ -28,11 +44,8 @@ export default {
   props: { poll: Object },
   data() {
     return {
-      footerText: ''
+      selected: ''
     }
-  },
-  mounted: function() {
-    this.footerText = 'Votes: ' + this.poll.votes_count.toString()
   }
 }
 </script>

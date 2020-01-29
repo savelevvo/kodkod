@@ -7,7 +7,7 @@ from users.serializers import AuthUserSerializer
 class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
-        fields = ('text', 'votes_number')
+        fields = ('id', 'text', 'votes_number')
 
 
 class PollSerializer(serializers.ModelSerializer):

@@ -1,5 +1,7 @@
 from django.db import models
+from django.db.models.aggregates import Sum
 from django.contrib.postgres.fields import JSONField
+
 from users.models import AuthUser
 
 
@@ -13,6 +15,10 @@ class Poll(models.Model):
 
     created_timestamp = models.DateTimeField(auto_now_add=True)
     modified_timestamp = models.DateTimeField(auto_now=True)
+
+    @property
+    def votes_count(self):
+        return self.votes.aggregate(c=Sum('votes_number')).get('c', 0)
 
     def __str__(self):
         return self.subject

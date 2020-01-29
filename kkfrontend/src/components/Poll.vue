@@ -2,9 +2,9 @@
   <div>
     <b-card-group deck>
       <b-card
-        :header="poll.user.toString()"
+        :header="poll.user.email"
         header-tag="header"
-        footer="4 Comments 21 votes 9 watchers"
+        :footer="footerText"
         footer-tag="footer"
         :title="poll.subject"
       >
@@ -27,10 +27,12 @@
 export default {
   props: { poll: Object },
   data() {
-    return {}
+    return {
+      footerText: ''
+    }
   },
-  computed: {},
-  watch: {},
-  methods: {}
+  mounted: function() {
+    this.footerText = 'Votes: ' + this.poll.votes_count.toString()
+  }
 }
 </script>

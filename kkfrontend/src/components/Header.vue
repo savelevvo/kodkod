@@ -13,7 +13,7 @@
           <b-nav-item
             ><router-link to="/companies">Companies</router-link></b-nav-item
           >
-          <b-nav-item disabled>Polls: {{ totalCount }}</b-nav-item>
+          <b-nav-item disabled></b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">

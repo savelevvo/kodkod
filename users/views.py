@@ -8,25 +8,21 @@ from polls.serializers import PollSerializer
 
 from users.models import AuthUser
 from polls.models import Poll
+from .forms import RegistrationForm
 
 
 class AuthUserView(ModelViewSet):
     queryset = AuthUser.objects.all()
     serializer_class = AuthUserSerializer
 
-    @action(methods=['post'], detail=False)
-    def register(self, request):
-        username, password = request.POST.get('username', ''), request.POST.get('password', '')
-        if not username or not password:
-            return Response({'error': 'both username and password must be provided'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        try:
-            user = AuthUser.objects.create(username=username)
-            user.set_password(password)
-            user.save()
+    @action(methods=['post'], detail=False, url_path='create-account')
+    def create_account(self, request):
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
             return Response(status=status.HTTP_201_CREATED)
-        except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['get'], detail=True)
     def polls(self, request, pk):

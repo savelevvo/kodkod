@@ -9,7 +9,7 @@ class Poll(models.Model):
     subject = models.CharField(max_length=256)
     description = models.TextField(blank=True, default='')
     constraints = JSONField(default=dict, blank=True)
-    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, related_name='polls')
     is_private = models.BooleanField(default=False)
     # todo: tags
 

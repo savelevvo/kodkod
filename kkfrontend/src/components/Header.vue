@@ -26,10 +26,34 @@
             </b-input-group>
           </b-nav-form>
 
-          <b-nav-item><router-link to="/login">Login</router-link></b-nav-item>
-          <b-nav-item
-            ><router-link to="/signup">Sign Up</router-link></b-nav-item
-          >
+          <b-nav-form v-if="$store.state.isAuthenticated">
+            <b-button variant="dark">
+              Profile
+            </b-button>
+            <b-button variant="dark">
+              Logout
+            </b-button>
+          </b-nav-form>
+          <b-nav-form v-else>
+            <b-button variant="dark" id="popover-login-form">
+              Login
+            </b-button>
+            <b-popover
+              target="popover-login-form"
+              triggers="focus"
+              placement="bottom"
+            >
+              <Login />
+            </b-popover>
+
+            <b-nav-item
+              ><router-link to="/signup"
+                ><b-button variant="dark">
+                  Sign Up
+                </b-button></router-link
+              ></b-nav-item
+            >
+          </b-nav-form>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -37,7 +61,11 @@
 </template>
 
 <script>
+import Login from './Login.vue'
+
 export default {
-  props: ['totalCount']
+  components: {
+    Login
+  }
 }
 </script>

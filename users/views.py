@@ -22,7 +22,7 @@ class AuthUserView(ModelViewSet):
             permission_classes = (IsAuthenticated,)
         return [permission() for permission in permission_classes]
 
-    @action(methods=['post'], detail=False, url_path='create-account')
+    @action(methods=['post'], detail=False, url_path='create-account', url_name='create-account')
     def create_account(self, request):
         form = RegistrationForm(request.POST)
         if form.is_valid():

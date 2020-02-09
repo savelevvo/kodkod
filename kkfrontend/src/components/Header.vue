@@ -30,7 +30,7 @@
             <b-button variant="dark">
               Profile
             </b-button>
-            <b-button variant="dark">
+            <b-button variant="dark" @click.prevent="logout">
               Logout
             </b-button>
           </b-nav-form>
@@ -46,13 +46,16 @@
               <Login />
             </b-popover>
 
-            <b-nav-item
-              ><router-link to="/signup"
-                ><b-button variant="dark">
-                  Sign Up
-                </b-button></router-link
-              ></b-nav-item
+            <b-button variant="dark" id="popover-signup-form">
+              Sign Up
+            </b-button>
+            <b-popover
+              target="popover-signup-form"
+              triggers="focus"
+              placement="bottom"
             >
+              <SignUp />
+            </b-popover>
           </b-nav-form>
         </b-navbar-nav>
       </b-collapse>
@@ -62,10 +65,17 @@
 
 <script>
 import Login from './Login.vue'
+import SignUp from './SignUp.vue'
 
 export default {
   components: {
-    Login
+    Login,
+    SignUp
+  },
+  methods: {
+    logout() {
+      this.$store.commit('removeToken')
+    }
   }
 }
 </script>

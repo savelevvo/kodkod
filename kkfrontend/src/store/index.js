@@ -14,7 +14,7 @@ export default new Vuex.Store({
     endpoints: {
       obtainJWT: 'http://127.0.0.1:8000/auth/token/',
       refreshJWT: 'http://127.0.0.1:8000/auth/token/refresh/',
-      baseUrl: 'http://127.0.0.1:8000/'
+      createAccount: 'http://127.0.0.1:8000/users/create-account/'
     }
   },
 
@@ -29,6 +29,7 @@ export default new Vuex.Store({
     removeToken(state) {
       localStorage.removeItem('token')
       state.jwt = null
+      Vue.set(state, 'isAuthenticated', false)
     }
   }
 })

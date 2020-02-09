@@ -24,7 +24,7 @@
           </b-form-radio>
         </b-form-group>
 
-        <b-button variant="primary">
+        <b-button variant="primary" size="sm">
           Submit
         </b-button>
 
